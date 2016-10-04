@@ -1,2 +1,8 @@
-/target
+#Eclipse files
+.project
+.classpath
 /.settings
+
+
+#Maven generated files
+/target
