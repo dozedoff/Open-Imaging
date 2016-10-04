@@ -65,16 +65,11 @@ public class GifDecoderTest {
 
 	@Test
 	public void testMetadata() throws Exception {
-		try {
-			for (final TestImage testImg : ALL) {
-				final GifImage gifImage = GifDecoder.read(testImg.data);
-				assertEquals("width", testImg.width, gifImage.getWidth());
-				assertEquals("height", testImg.height, gifImage.getHeight());
-				assertEquals("frames", testImg.frames, gifImage.getFrameCount());
-			}
-		} catch (final Exception e) {
-			e.printStackTrace();
-			assertEquals(true, false);
+		for (final TestImage testImg : ALL) {
+			final GifImage gifImage = GifDecoder.read(testImg.data);
+			assertEquals("width", testImg.width, gifImage.getWidth());
+			assertEquals("height", testImg.height, gifImage.getHeight());
+			assertEquals("frames", testImg.frames, gifImage.getFrameCount());
 		}
 	}
 
@@ -82,75 +77,58 @@ public class GifDecoderTest {
 	@Test
 	public void testPerformanceKevinWeinerDecoder() {
 		// TODO Move to own file and mark as Integration test?
-		try {
-			final long start = System.nanoTime();
-			for (int n = 0; n < LOOPS; n++) {
-				for (final TestImage testImg : ALL) {
-					testImg.stream.reset();
-					final com.fmsware.GifDecoder decoder = new com.fmsware.GifDecoder();
-					decoder.read(testImg.stream);
-					final int frameCount = decoder.getFrameCount();
-					for (int i = 0; i < frameCount; i++) {
-						decoder.getFrame(i);
-					}
+		final long start = System.nanoTime();
+		for (int n = 0; n < LOOPS; n++) {
+			for (final TestImage testImg : ALL) {
+				testImg.stream.reset();
+				final com.fmsware.GifDecoder decoder = new com.fmsware.GifDecoder();
+				decoder.read(testImg.stream);
+				final int frameCount = decoder.getFrameCount();
+				for (int i = 0; i < frameCount; i++) {
+					decoder.getFrame(i);
 				}
 			}
-			final long runtime = (System.nanoTime() - start) / 1000000;
-			final long avg = Math.round(runtime / LOOPS);
-			System.out.println("RESULTS FOR KEVIN WEINER DECODER");
-			System.out.println("Files: " + ALL.length);
-			System.out.println("Repetitions: " + LOOPS);
-			System.out.println("Runtime: " + runtime + " ms");
-			System.out.println("Time per repetition: " + avg + " ms");
-			assertEquals(true, true);
-		} catch (final Exception e) {
-			assertEquals(true, false);
 		}
-
+		final long runtime = (System.nanoTime() - start) / 1000000;
+		final long avg = Math.round(runtime / LOOPS);
+		System.out.println("RESULTS FOR KEVIN WEINER DECODER");
+		System.out.println("Files: " + ALL.length);
+		System.out.println("Repetitions: " + LOOPS);
+		System.out.println("Runtime: " + runtime + " ms");
+		System.out.println("Time per repetition: " + avg + " ms");
 	}
 
 	@Ignore("This is a benchmark, not a unit test")
 	@Test
 	public void testPerformanceOpenImagingDecoder() throws Exception {
 		// TODO Move to own file and mark as Integration test?
-		try {
-			final long start = System.nanoTime();
-			for (int n = 0; n < LOOPS; n++) {
-				for (final TestImage testImg : ALL) {
-					final GifImage gifImage = GifDecoder.read(testImg.data);
-					final int frameCount = gifImage.getFrameCount();
-					for (int i = 0; i < frameCount; i++) {
-						gifImage.getFrame(i);
-					}
+		final long start = System.nanoTime();
+		for (int n = 0; n < LOOPS; n++) {
+			for (final TestImage testImg : ALL) {
+				final GifImage gifImage = GifDecoder.read(testImg.data);
+				final int frameCount = gifImage.getFrameCount();
+				for (int i = 0; i < frameCount; i++) {
+					gifImage.getFrame(i);
 				}
 			}
-			final long runtime = (System.nanoTime() - start) / 1000000;
-			final long avg = Math.round(runtime / LOOPS);
-			System.out.println("RESULTS FOR OPEN IMAGING DECODER");
-			System.out.println("Files: " + ALL.length);
-			System.out.println("Repetitions: " + LOOPS);
-			System.out.println("Total time: " + runtime + " ms");
-			System.out.println("Time per repetition: " + avg + " ms");
-			assertEquals(true, true);
-		} catch (final Exception e) {
-			e.printStackTrace();
-			assertEquals(true, false);
 		}
+		final long runtime = (System.nanoTime() - start) / 1000000;
+		final long avg = Math.round(runtime / LOOPS);
+		System.out.println("RESULTS FOR OPEN IMAGING DECODER");
+		System.out.println("Files: " + ALL.length);
+		System.out.println("Repetitions: " + LOOPS);
+		System.out.println("Total time: " + runtime + " ms");
+		System.out.println("Time per repetition: " + avg + " ms");
+		assertEquals(true, true);
 	}
 
 	@Test
 	public void testWriteFrames() throws Exception {
-		try {
-			final GifImage gif = GifDecoder.read(SINGLE.data);
-			final int frameCount = gif.getFrameCount();
-			for (int i = 0; i < frameCount; i++) {
-				final BufferedImage img = gif.getFrame(i);
-				ImageIO.write(img, "png", new File(OUT_FOLDER + "frame_" + i
-						+ ".png"));
-			}
-		} catch (final Exception e) {
-			e.printStackTrace();
-			assertEquals(true, false);
+		final GifImage gif = GifDecoder.read(SINGLE.data);
+		final int frameCount = gif.getFrameCount();
+		for (int i = 0; i < frameCount; i++) {
+			final BufferedImage img = gif.getFrame(i);
+			ImageIO.write(img, "png", new File(OUT_FOLDER + "frame_" + i + ".png"));
 		}
 	}
 }
