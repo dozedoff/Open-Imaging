@@ -10,6 +10,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import at.dhyan.open_imaging.GifDecoder;
@@ -77,8 +78,10 @@ public class GifDecoderTest {
 		}
 	}
 
+	@Ignore("This is a benchmark, not a unit test")
 	@Test
 	public void testPerformanceKevinWeinerDecoder() {
+		// TODO Move to own file and mark as Integration test?
 		try {
 			final long start = System.nanoTime();
 			for (int n = 0; n < LOOPS; n++) {
@@ -106,8 +109,10 @@ public class GifDecoderTest {
 
 	}
 
+	@Ignore("This is a benchmark, not a unit test")
 	@Test
 	public void testPerformanceOpenImagingDecoder() throws Exception {
+		// TODO Move to own file and mark as Integration test?
 		try {
 			final long start = System.nanoTime();
 			for (int n = 0; n < LOOPS; n++) {
